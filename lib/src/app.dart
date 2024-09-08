@@ -18,23 +18,19 @@ class App extends StatefulWidget {
 
 class AppState extends State<App> {
   int numeroImagens = 1;
-  List<ImageModel> imagens = []; 
+  List<ImageModel> imagens = [];
 
   void obterImagens() async {
-    var url = Uri.https(
-      'api.pexels.com', 
-      '/v1/search',
-      {'query': 'people', 'page': '$numeroImagens', 'per_page': '1'}
-      );
+    var url = Uri.https('api.pexels.com', '/v1/search',
+        {'query': 'cats', 'page': '$numeroImagens', 'per_page': '1'});
 
     var req = http.Request('get', url);
     req.headers.addAll({
       'Authorization': dotenv.env['API_KEY']!,
     });
 
-
     final result = await req.send();
-    if(result.statusCode == 200){
+    if (result.statusCode == 200) {
       final response = await http.Response.fromStream(result);
       var decodedJSON = jsonDecode(response.body);
       var imagem = ImageModel.fromJSON(decodedJSON);
@@ -43,8 +39,7 @@ class AppState extends State<App> {
         imagens.add(imagem);
         // numeroImagens = imagens.length;
       });
-    }
-    else{
+    } else {
       print("Erro ao obter imagens");
     }
   }
@@ -66,7 +61,6 @@ class AppState extends State<App> {
       ),
     );
   }
-
 }
 
 // class App extends StatelessWidget{
